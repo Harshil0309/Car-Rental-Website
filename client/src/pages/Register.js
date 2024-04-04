@@ -15,6 +15,12 @@ function Register() {
     dispatch(userRegister(values));
     console.log(values);
   }
+  const inputStyle = {
+    width: "110%",
+    height: "110%",
+    backgroundColor: "#1F1F1F",
+    borderColor: "#1F1F1F",
+  };
   return (
     <div className="login">
       {loading && <Spinner />}
@@ -47,14 +53,14 @@ function Register() {
               label="Password"
               rules={[{ required: true }]}
             >
-              <Input />
+              <Input.Password style={inputStyle} />
             </Form.Item>
             <Form.Item
               name="cpassword"
               label="Confirm Password"
               rules={[{ required: true }]}
             >
-              <Input />
+              <Input.Password style={inputStyle} />
             </Form.Item>
             <button className="btn1 mt-2 mb-3">Register</button>
             <br />
