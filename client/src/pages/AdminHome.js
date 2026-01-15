@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import DefaultLayout from "../components/DefaultLayout";
 import { deleteCar, getAllCars } from "../redux/actions/carsActions";
-import { Col, Row, Divider, DatePicker, Checkbox, Edit } from "antd";
+import { Col, Row, Button, Empty, Space } from "antd";
 import { Link } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import moment from "moment";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Popconfirm, message } from "antd";
-const { RangePicker } = DatePicker;
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { Popconfirm, message, Card } from "antd";
+
 function AdminHome() {
   const { cars } = useSelector((state) => state.carsReducers);
   const { loading } = useSelector((state) => state.alertsReducer);
@@ -17,66 +16,131 @@ function AdminHome() {
 
   useEffect(() => {
     dispatch(getAllCars());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setTotalcars(cars);
   }, [cars]);
 
+  const handleDelete = (carId) => {
+    dispatch(deleteCar({ carid: carId }));
+    message.success('Car deleted successfully!');
+  };
+
   return (
     <DefaultLayout>
-      <Row justify="center" gutter={16} className="mt-2">
-        <Col lg={20} sm={24}>
+      <Row justify="center" gutter={16} className="mt-4 mb-4">
+        <Col lg={20} sm={24} xs={24}>
           <div className="d-flex justify-content-between align-items-center">
-            <h3 className="mt-1 mr-2">Admin Panel</h3>
-            <button className="btn1">
-              <a href="/addcar">ADD CAR</a>
-            </button>
+            <h2 style={{ 
+              margin: 0, 
+              fontSize: '2rem', 
+              fontWeight: '700',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}>
+              🛡️ Admin Panel
+            </h2>
+            <Link to="/addcar">
+              <Button 
+                type='primary'
+                size='large'
+                icon={<PlusOutlined />}
+                style={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontWeight: '600'
+                }}
+              >
+                Add New Car
+              </Button>
+            </Link>
           </div>
         </Col>
       </Row>
 
-      {loading == true && <Spinner />}
+      {loading && <Spinner />}
 
-      <Row justify="center" gutter={16}>
-        {totalCars.map((car) => {
-          return (
-            <Col lg={5} sm={24} xs={24}>
-              <div className="car p-2 bs1">
-                <img src={car.image} className="carimg" />
+      {totalCars.length === 0 ? (
+        <Row justify="center">
+          <Col lg={20} sm={24} xs={24}>
+            <Empty
+              description="No cars added yet"
+              style={{ marginTop: "50px", marginBottom: "50px" }}
+            />
+          </Col>
+        </Row>
+      ) : (
+        <Row justify="center" gutter={[16, 24]} style={{ paddingBottom: '30px' }}>
+          {totalCars.map((car) => {
+            return (
+              <Col lg={5} md={8} sm={12} xs={24} key={car._id}>
+                <Card 
+                  className="car p-2 bs1"
+                  hoverable
+                  cover={
+                    <img 
+                      src={car.image} 
+                      alt={car.name}
+                      className="carimg"
+                      style={{ height: '200px', objectFit: 'cover', borderRadius: '10px' }}
+                    />
+                  }
+                  bodyStyle={{ padding: '1rem' }}
+                  style={{ borderRadius: '12px', overflow: 'hidden' }}
+                >
+                  <div className="car-content d-flex align-items-center justify-content-between">
+                    <div className="text-left pl-2">
+                      <p style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0.5rem' }}>
+                        {car.name}
+                      </p>
+                      <p style={{ fontSize: '0.9rem', marginBottom: '0.3rem' }}>
+                        💰 ${car.rentPerHour}/hour
+                      </p>
+                      <p style={{ fontSize: '0.85rem', opacity: 0.8, marginBottom: 0 }}>
+                        👥 {car.capacity} seats • {car.fuelType}
+                      </p>
+                    </div>
 
-                <div className="car-content d-flex align-items-center justify-content-between">
-                  <div className="text-left pl-2">
-                    <p>{car.name}</p>
-                    <p> Rent Per Hour {car.rentPerHour} /-</p>
+                    <div style={{ display: 'flex', gap: '8px', flexDirection: 'column' }}>
+                      <Link to={`/editcar/${car._id}`}>
+                        <Button
+                          type='primary'
+                          shape='circle'
+                          icon={<EditOutlined />}
+                          style={{
+                            background: '#52c41a',
+                            border: 'none'
+                          }}
+                          title="Edit car"
+                        />
+                      </Link>
+
+                      <Popconfirm
+                        title="Delete Car"
+                        description="Are you sure you want to delete this car?"
+                        onConfirm={() => handleDelete(car._id)}
+                        okText="Yes"
+                        cancelText="No"
+                        okButtonProps={{ danger: true }}
+                      >
+                        <Button
+                          danger
+                          shape='circle'
+                          icon={<DeleteOutlined />}
+                          title="Delete car"
+                        />
+                      </Popconfirm>
+                    </div>
                   </div>
-
-                  <div className="mr-4">
-                    <Link to={`/editcar/${car._id}`}>
-                      <EditOutlined
-                        className="mr-3"
-                        style={{ color: "green", cursor: "pointer" }}
-                      />
-                    </Link>
-
-                    <Popconfirm
-                      title="Are you sure to delete this car?"
-                      onConfirm={()=>{dispatch(deleteCar({carid : car._id}))}}
-                      
-                      okText="Yes"
-                      cancelText="No"
-                    >
-                      <DeleteOutlined
-                        style={{ color: "red", cursor: "pointer" }}
-                      />
-                    </Popconfirm>
-                  </div>
-                </div>
-              </div>
-            </Col>
-          );
-        })}
-      </Row>
+                </Card>
+              </Col>
+            );
+          })}
+        </Row>
+      )}
     </DefaultLayout>
   );
 }

@@ -5,11 +5,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Bookingcar from "./pages/Bookingcar";
 import Private from "./components/Private";
+import AdminProtected from "./components/AdminProtected";
 import UserBookings from "./pages/UserBookings";
 import AddCar from "./pages/AddCar";
 import AdminHome from "./pages/AdminHome";
 import EditCar from "./pages/EditCar";
-// import "antd/dist/antd.css";
+
 function App() {
   return (
     <div className="App">
@@ -31,17 +32,17 @@ function App() {
           <Route
             path="/addcar"
             exact
-            element={<Private Component={AddCar} />}
+            element={<AdminProtected Component={AddCar} />}
           />
           <Route
             path="/editcar/:carid"
             exact
-            element={<Private Component={EditCar} />}
+            element={<AdminProtected Component={EditCar} />}
           />
           <Route
             path="/admin"
             exact
-            element={<Private Component={AdminHome} />}
+            element={<AdminProtected Component={AdminHome} />}
           />
         </Routes>
       </BrowserRouter>

@@ -1,46 +1,72 @@
-import React from "react";
+import React, { useState } from "react";
 import { Menu, Dropdown, Button, Space, Row, Col } from "antd";
 import { Link } from "react-router-dom";
+import { UserOutlined, LogoutOutlined, HomeOutlined, BookOutlined, DashboardOutlined } from "@ant-design/icons";
 
 function DefaultLayout(props) {
   const user = JSON.parse(localStorage.getItem("user"));
+  const isAdmin = user?.isAdmin || user?.role === 'admin';
+  
   const menu = (
     <Menu>
-      <Menu.Item>
-        <a href="/">Home</a>
+      <Menu.Item key="1" icon={<HomeOutlined />}>
+        <Link to="/" style={{ color: "inherit" }}>Home</Link>
       </Menu.Item>
-      <Menu.Item>
-        <a href="/userbookings">My Bookings</a>
+      <Menu.Item key="2" icon={<BookOutlined />}>
+        <Link to="/userbookings" style={{ color: "inherit" }}>My Bookings</Link>
       </Menu.Item>
-      <Menu.Item>
-        <a href="/admin">Admin</a>
-      </Menu.Item>
+      
+      {isAdmin && (
+        <>
+          <Menu.Divider />
+          <Menu.ItemGroup title="Admin" style={{ color: '#667eea', fontWeight: '600' }}>
+            <Menu.Item key="3" icon={<DashboardOutlined />}>
+              <Link to="/admin" style={{ color: "inherit" }}>Admin Panel</Link>
+            </Menu.Item>
+          </Menu.ItemGroup>
+        </>
+      )}
+      
+      <Menu.Divider />
       <Menu.Item
+        key="4"
+        icon={<LogoutOutlined />}
         onClick={() => {
           localStorage.removeItem("user");
           window.location.href = "/login";
         }}
       >
-        <li style={{ color: "orangered" }}>Logout</li>
+        <span style={{ color: "#d32f2f" }}>Logout</span>
       </Menu.Item>
     </Menu>
   );
+
   return (
     <div>
       <div className="header bs1">
         <Row gutter={16} justify="center">
           <Col lg={20} sm={24} xs={24}>
-            <div className="d-flex justify-content-between">
-              <h1>
+            <div className="d-flex justify-content-between align-items-center">
+              <h1 style={{ margin: 0 }}>
                 <b>
-                  <Link to="/" style={{ color: "orangered" }}>
-                    Cars
+                  <Link to="/" style={{ textDecoration: "none" }}>
+                    🚗 Rent-A-Car {isAdmin && <span style={{ fontSize: '0.6em', marginLeft: '8px' }}>👑 Admin</span>}
                   </Link>
                 </b>
               </h1>
 
-              <Dropdown overlay={menu} placement="bottom">
-                <Button>{user.username}</Button>
+              <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
+                <Button 
+                  type="primary" 
+                  shape="round"
+                  icon={<UserOutlined />}
+                  style={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    border: 'none'
+                  }}
+                >
+                  {user?.username || 'User'} {isAdmin && '👑'}
+                </Button>
               </Dropdown>
             </div>
           </Col>
@@ -48,12 +74,11 @@ function DefaultLayout(props) {
       </div>
       <div className="content">{props.children}</div>
 
-      <div className="footer text-center">
+      <div className="footer">
         <hr />
-
-        <p>Designed & Developed By</p>
-
-        <p>Harshil Gupta</p>
+        <p style={{ fontSize: "1rem", fontWeight: "500", marginBottom: "10px" }}>Designed & Developed By</p>
+        <p style={{ fontSize: "0.95rem", opacity: 0.8 }}>Harshil Gupta</p>
+        <p style={{ fontSize: "0.85rem", opacity: 0.6, marginTop: "15px" }}>© 2024 Rent-A-Car. All rights reserved.</p>
       </div>
     </div>
   );
