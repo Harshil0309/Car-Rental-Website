@@ -1,32 +1,47 @@
 import React, { useState } from "react";
 import { Menu, Dropdown, Button, Space, Row, Col } from "antd";
 import { Link } from "react-router-dom";
-import { UserOutlined, LogoutOutlined, HomeOutlined, BookOutlined, DashboardOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  LogoutOutlined,
+  HomeOutlined,
+  BookOutlined,
+  DashboardOutlined,
+} from "@ant-design/icons";
 
 function DefaultLayout(props) {
   const user = JSON.parse(localStorage.getItem("user"));
-  const isAdmin = user?.isAdmin || user?.role === 'admin';
-  
+  const isAdmin = user?.isAdmin || user?.role === "admin";
+
   const menu = (
     <Menu>
       <Menu.Item key="1" icon={<HomeOutlined />}>
-        <Link to="/" style={{ color: "inherit" }}>Home</Link>
+        <Link to="/" style={{ color: "inherit" }}>
+          Home
+        </Link>
       </Menu.Item>
       <Menu.Item key="2" icon={<BookOutlined />}>
-        <Link to="/userbookings" style={{ color: "inherit" }}>My Bookings</Link>
+        <Link to="/userbookings" style={{ color: "inherit" }}>
+          My Bookings
+        </Link>
       </Menu.Item>
-      
+
       {isAdmin && (
         <>
           <Menu.Divider />
-          <Menu.ItemGroup title="Admin" style={{ color: '#667eea', fontWeight: '600' }}>
+          <Menu.ItemGroup
+            title="Admin"
+            style={{ color: "#667eea", fontWeight: "600" }}
+          >
             <Menu.Item key="3" icon={<DashboardOutlined />}>
-              <Link to="/admin" style={{ color: "inherit" }}>Admin Panel</Link>
+              <Link to="/admin" style={{ color: "inherit" }}>
+                Admin Panel
+              </Link>
             </Menu.Item>
           </Menu.ItemGroup>
         </>
       )}
-      
+
       <Menu.Divider />
       <Menu.Item
         key="4"
@@ -50,22 +65,32 @@ function DefaultLayout(props) {
               <h1 style={{ margin: 0 }}>
                 <b>
                   <Link to="/" style={{ textDecoration: "none" }}>
-                    🚗 Rent-A-Car {isAdmin && <span style={{ fontSize: '0.6em', marginLeft: '8px' }}>👑 Admin</span>}
+                    🚗 Rent-A-Car{" "}
+                    {isAdmin && (
+                      <span style={{ fontSize: "0.6em", marginLeft: "8px" }}>
+                        👑 Admin
+                      </span>
+                    )}
                   </Link>
                 </b>
               </h1>
 
-              <Dropdown overlay={menu} placement="bottomRight" trigger={['click']}>
-                <Button 
-                  type="primary" 
+              <Dropdown
+                overlay={menu}
+                placement="bottomRight"
+                trigger={["click"]}
+              >
+                <Button
+                  type="primary"
                   shape="round"
                   icon={<UserOutlined />}
                   style={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    border: 'none'
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    border: "none",
                   }}
                 >
-                  {user?.username || 'User'} {isAdmin && '👑'}
+                  {user?.username || "User"} {isAdmin && "👑"}
                 </Button>
               </Dropdown>
             </div>
@@ -76,9 +101,15 @@ function DefaultLayout(props) {
 
       <div className="footer">
         <hr />
-        <p style={{ fontSize: "1rem", fontWeight: "500", marginBottom: "10px" }}>Designed & Developed By</p>
+        <p
+          style={{ fontSize: "1rem", fontWeight: "500", marginBottom: "10px" }}
+        >
+          Designed & Developed By
+        </p>
         <p style={{ fontSize: "0.95rem", opacity: 0.8 }}>Harshil Gupta</p>
-        <p style={{ fontSize: "0.85rem", opacity: 0.6, marginTop: "15px" }}>© 2024 Rent-A-Car. All rights reserved.</p>
+        <p style={{ fontSize: "0.85rem", opacity: 0.6, marginTop: "15px" }}>
+          © 2024 Rent-A-Car. All rights reserved.
+        </p>
       </div>
     </div>
   );

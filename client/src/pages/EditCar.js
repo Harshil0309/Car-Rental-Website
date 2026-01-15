@@ -42,15 +42,23 @@ function EditCar() {
       <Row justify="center" style={{ paddingTop: "30px" }}>
         <Col lg={12} sm={24} xs={24} className="p-2">
           {totalcars.length > 0 && car && (
-            <Card 
+            <Card
               title={
-                <div style={{ fontSize: '1.3rem', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div
+                  style={{
+                    fontSize: "1.3rem",
+                    fontWeight: "700",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                  }}
+                >
                   <EditOutlined /> Edit Car Details
                 </div>
               }
-              className='bs1'
-              bodyStyle={{ padding: '2rem' }}
-              style={{ borderRadius: '12px' }}
+              className="bs1"
+              bodyStyle={{ padding: "2rem" }}
+              style={{ borderRadius: "12px" }}
             >
               <Form
                 form={form}
@@ -62,25 +70,25 @@ function EditCar() {
                   name="name"
                   label="Car Name"
                   rules={[
-                    { required: true, message: 'Please enter car name' },
-                    { min: 2, message: 'Car name must be at least 2 characters' }
+                    { required: true, message: "Please enter car name" },
+                    {
+                      min: 2,
+                      message: "Car name must be at least 2 characters",
+                    },
                   ]}
                 >
-                  <Input 
-                    placeholder="e.g., Toyota Camry"
-                    size="large"
-                  />
+                  <Input placeholder="e.g., Toyota Camry" size="large" />
                 </Form.Item>
 
                 <Form.Item
                   name="image"
                   label="Image URL"
                   rules={[
-                    { required: true, message: 'Please enter image URL' },
-                    { type: 'url', message: 'Please enter a valid URL' }
+                    { required: true, message: "Please enter image URL" },
+                    { type: "url", message: "Please enter a valid URL" },
                   ]}
                 >
-                  <Input 
+                  <Input
                     placeholder="https://example.com/car-image.jpg"
                     size="large"
                   />
@@ -90,61 +98,64 @@ function EditCar() {
                   name="rentPerHour"
                   label="Rent Per Hour ($)"
                   rules={[
-                    { required: true, message: 'Please enter rent per hour' },
-                    { pattern: /^\d+$/, message: 'Please enter a valid number' }
+                    { required: true, message: "Please enter rent per hour" },
+                    {
+                      pattern: /^\d+$/,
+                      message: "Please enter a valid number",
+                    },
                   ]}
                 >
-                  <Input 
-                    placeholder="e.g., 50"
-                    size="large"
-                    type="number"
-                  />
+                  <Input placeholder="e.g., 50" size="large" type="number" />
                 </Form.Item>
 
                 <Form.Item
                   name="capacity"
                   label="Passenger Capacity"
                   rules={[
-                    { required: true, message: 'Please enter capacity' },
-                    { pattern: /^\d+$/, message: 'Please enter a valid number' }
+                    { required: true, message: "Please enter capacity" },
+                    {
+                      pattern: /^\d+$/,
+                      message: "Please enter a valid number",
+                    },
                   ]}
                 >
-                  <Input 
-                    placeholder="e.g., 5"
-                    size="large"
-                    type="number"
-                  />
+                  <Input placeholder="e.g., 5" size="large" type="number" />
                 </Form.Item>
 
                 <Form.Item
                   name="fuelType"
                   label="Fuel Type"
                   rules={[
-                    { required: true, message: 'Please enter fuel type' }
+                    { required: true, message: "Please enter fuel type" },
                   ]}
                 >
-                  <Input 
+                  <Input
                     placeholder="e.g., Petrol, Diesel, Electric"
                     size="large"
                   />
                 </Form.Item>
 
-                <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '2rem' }}>
-                  <Button 
-                    size='large'
-                    style={{ borderRadius: '6px' }}
-                  >
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "10px",
+                    justifyContent: "flex-end",
+                    marginTop: "2rem",
+                  }}
+                >
+                  <Button size="large" style={{ borderRadius: "6px" }}>
                     Cancel
                   </Button>
-                  <Button 
-                    type='primary' 
-                    htmlType='submit'
-                    size='large'
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    size="large"
                     style={{
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      border: 'none',
-                      borderRadius: '6px',
-                      fontWeight: '600'
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      border: "none",
+                      borderRadius: "6px",
+                      fontWeight: "600",
                     }}
                   >
                     Update Car

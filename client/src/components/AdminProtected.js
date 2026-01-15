@@ -21,7 +21,7 @@ function AdminProtected({ Component }) {
     );
   }
 
-  if (!user.isAdmin && user.role !== 'admin') {
+  if (!user.isAdmin && user.role !== "admin") {
     return (
       <Result
         status="403"

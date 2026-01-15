@@ -3,7 +3,7 @@
 export const isUserAdmin = () => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
-    return user && (user.isAdmin === true || user.role === 'admin');
+    return user && (user.isAdmin === true || user.role === "admin");
   } catch (e) {
     return false;
   }
@@ -22,7 +22,7 @@ export const setUserAdmin = (userId, isAdmin = true) => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user && user._id === userId) {
       user.isAdmin = isAdmin;
-      user.role = isAdmin ? 'admin' : 'user';
+      user.role = isAdmin ? "admin" : "user";
       localStorage.setItem("user", JSON.stringify(user));
       return true;
     }
