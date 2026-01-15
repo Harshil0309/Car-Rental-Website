@@ -6,7 +6,10 @@ async function setupSuperAdmin() {
     // Check if super admin already exists
     const existingSuperAdmin = await User.findOne({ isSuperAdmin: true });
     if (existingSuperAdmin) {
-      console.log("✅ Super Admin already exists:", existingSuperAdmin.username);
+      console.log(
+        "✅ Super Admin already exists:",
+        existingSuperAdmin.username
+      );
       process.exit(0);
     }
 

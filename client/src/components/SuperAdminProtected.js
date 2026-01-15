@@ -21,7 +21,7 @@ function SuperAdminProtected({ Component }) {
     );
   }
 
-  if (!user.isSuperAdmin && user.role !== 'superadmin') {
+  if (!user.isSuperAdmin && user.role !== "superadmin") {
     return (
       <Result
         status="403"

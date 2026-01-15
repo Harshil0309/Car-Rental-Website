@@ -18,7 +18,13 @@ import {
 } from "antd";
 import Spinner from "../components/Spinner";
 import moment from "moment";
-import { SearchOutlined, DeleteOutlined, LockOutlined, UnlockOutlined, CrownOutlined } from "@ant-design/icons";
+import {
+  SearchOutlined,
+  DeleteOutlined,
+  LockOutlined,
+  UnlockOutlined,
+  CrownOutlined,
+} from "@ant-design/icons";
 import { userLogin } from "../redux/actions/userActions";
 
 function UserManagement() {
@@ -38,12 +44,15 @@ function UserManagement() {
         return;
       }
 
-      const response = await fetch(`http://localhost:5000/api/users/all?userId=${currentUser._id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/users/all?userId=${currentUser._id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
@@ -67,17 +76,20 @@ function UserManagement() {
   const handleToggleAdmin = async (targetUserId, currentStatus) => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/users/toggleadmin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId: currentUser?._id,
-          targetUserId: targetUserId,
-          isAdmin: !currentStatus,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/users/toggleadmin",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId: currentUser?._id,
+            targetUserId: targetUserId,
+            isAdmin: !currentStatus,
+          }),
+        }
+      );
 
       const data = await response.json();
 
@@ -103,17 +115,22 @@ function UserManagement() {
 
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:5000/api/users/${userId}?userId=${currentUser?._id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `http://localhost:5000/api/users/${userId}?userId=${currentUser?._id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
-        message.success(data.message || `User "${username}" deleted successfully`);
+        message.success(
+          data.message || `User "${username}" deleted successfully`
+        );
         fetchUsers();
       } else {
         message.error(data.message || "Failed to delete user");
@@ -184,9 +201,7 @@ function UserManagement() {
           {record.role !== "superadmin" && (
             <Tooltip
               title={
-                record.isAdmin
-                  ? "Remove Admin Privileges"
-                  : "Promote to Admin"
+                record.isAdmin ? "Remove Admin Privileges" : "Promote to Admin"
               }
             >
               <Button
@@ -210,10 +225,7 @@ function UserManagement() {
               cancelText="No"
               okButtonProps={{ danger: true }}
             >
-              <Button
-                danger
-                icon={<DeleteOutlined />}
-              >
+              <Button danger icon={<DeleteOutlined />}>
                 Delete
               </Button>
             </Popconfirm>
@@ -227,7 +239,10 @@ function UserManagement() {
     <DefaultLayout>
       {loading && <Spinner />}
 
-      <Row justify="center" style={{ paddingTop: "40px", paddingBottom: "40px" }}>
+      <Row
+        justify="center"
+        style={{ paddingTop: "40px", paddingBottom: "40px" }}
+      >
         <Col lg={22} sm={24} xs={24}>
           <Card
             title={
@@ -267,7 +282,8 @@ function UserManagement() {
                   block
                   size="large"
                   style={{
-                    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                     border: "none",
                     borderRadius: "6px",
                     fontWeight: "600",
@@ -312,26 +328,50 @@ function UserManagement() {
               <Row gutter={16}>
                 <Col span={8}>
                   <div style={{ textAlign: "center" }}>
-                    <p style={{ fontSize: "1.5rem", fontWeight: "700", color: "#667eea" }}>
+                    <p
+                      style={{
+                        fontSize: "1.5rem",
+                        fontWeight: "700",
+                        color: "#667eea",
+                      }}
+                    >
                       {users.length}
                     </p>
-                    <p style={{ fontSize: "0.9rem", color: "#666" }}>Total Users</p>
+                    <p style={{ fontSize: "0.9rem", color: "#666" }}>
+                      Total Users
+                    </p>
                   </div>
                 </Col>
                 <Col span={8}>
                   <div style={{ textAlign: "center" }}>
-                    <p style={{ fontSize: "1.5rem", fontWeight: "700", color: "#52c41a" }}>
+                    <p
+                      style={{
+                        fontSize: "1.5rem",
+                        fontWeight: "700",
+                        color: "#52c41a",
+                      }}
+                    >
                       {users.filter((u) => u.isAdmin).length}
                     </p>
-                    <p style={{ fontSize: "0.9rem", color: "#666" }}>Admin Users</p>
+                    <p style={{ fontSize: "0.9rem", color: "#666" }}>
+                      Admin Users
+                    </p>
                   </div>
                 </Col>
                 <Col span={8}>
                   <div style={{ textAlign: "center" }}>
-                    <p style={{ fontSize: "1.5rem", fontWeight: "700", color: "#1890ff" }}>
+                    <p
+                      style={{
+                        fontSize: "1.5rem",
+                        fontWeight: "700",
+                        color: "#1890ff",
+                      }}
+                    >
                       {users.filter((u) => !u.isAdmin).length}
                     </p>
-                    <p style={{ fontSize: "0.9rem", color: "#666" }}>Regular Users</p>
+                    <p style={{ fontSize: "0.9rem", color: "#666" }}>
+                      Regular Users
+                    </p>
                   </div>
                 </Col>
               </Row>

@@ -5,7 +5,11 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   isSuperAdmin: { type: Boolean, default: false },
-  role: { type: String, enum: ["user", "admin", "superadmin"], default: "user" },
+  role: {
+    type: String,
+    enum: ["user", "admin", "superadmin"],
+    default: "user",
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

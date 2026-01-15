@@ -11,8 +11,13 @@ const verifySuperAdmin = async (req, res, next) => {
     }
 
     const superAdminUser = await User.findOne({ _id: userId });
-    if (!superAdminUser || (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin")) {
-      return res.status(403).json({ message: "Access denied. Super Admin privileges required." });
+    if (
+      !superAdminUser ||
+      (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin")
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Super Admin privileges required." });
     }
     next();
   } catch (error) {
@@ -49,7 +54,7 @@ router.post("/register", async (req, res) => {
 router.get("/all", async (req, res) => {
   try {
     const { userId } = req.query;
-    
+
     if (!userId) {
       return res.status(400).json({ message: "Super admin user ID required" });
     }
@@ -61,14 +66,18 @@ router.get("/all", async (req, res) => {
     }
 
     if (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin") {
-      return res.status(403).json({ message: "Access denied. Super Admin privileges required." });
+      return res
+        .status(403)
+        .json({ message: "Access denied. Super Admin privileges required." });
     }
 
     const users = await User.find({}, "-password");
     res.json(users);
   } catch (error) {
     console.error("Error in /all endpoint:", error);
-    res.status(500).json({ message: "Failed to fetch users", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch users", error: error.message });
   }
 });
 
@@ -78,13 +87,20 @@ router.post("/toggleadmin", async (req, res) => {
     const { userId, targetUserId, isAdmin } = req.body;
 
     if (!userId || !targetUserId) {
-      return res.status(400).json({ message: "User ID and target user ID required" });
+      return res
+        .status(400)
+        .json({ message: "User ID and target user ID required" });
     }
 
     // Verify super admin
     const superAdminUser = await User.findOne({ _id: userId });
-    if (!superAdminUser || (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin")) {
-      return res.status(403).json({ message: "Access denied. Super Admin privileges required." });
+    if (
+      !superAdminUser ||
+      (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin")
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Super Admin privileges required." });
     }
 
     // Cannot modify super admin user
@@ -94,7 +110,9 @@ router.post("/toggleadmin", async (req, res) => {
     }
 
     if (targetUser.isSuperAdmin || targetUser.role === "superadmin") {
-      return res.status(403).json({ message: "Cannot modify super admin user" });
+      return res
+        .status(403)
+        .json({ message: "Cannot modify super admin user" });
     }
 
     // Update user admin status
@@ -103,12 +121,14 @@ router.post("/toggleadmin", async (req, res) => {
     targetUser.updatedAt = new Date();
     await targetUser.save();
 
-    res.send({ 
+    res.send({
       message: isAdmin ? "User promoted to Admin" : "Admin privileges removed",
-      user: targetUser 
+      user: targetUser,
     });
   } catch (error) {
-    return res.status(400).json({ message: "Failed to toggle admin status", error });
+    return res
+      .status(400)
+      .json({ message: "Failed to toggle admin status", error });
   }
 });
 
@@ -124,8 +144,13 @@ router.delete("/:id", async (req, res) => {
 
     // Verify super admin
     const superAdminUser = await User.findOne({ _id: userId });
-    if (!superAdminUser || (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin")) {
-      return res.status(403).json({ message: "Access denied. Super Admin privileges required." });
+    if (
+      !superAdminUser ||
+      (!superAdminUser.isSuperAdmin && superAdminUser.role !== "superadmin")
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Super Admin privileges required." });
     }
 
     // Cannot delete super admin user
@@ -135,12 +160,16 @@ router.delete("/:id", async (req, res) => {
     }
 
     if (targetUser.isSuperAdmin || targetUser.role === "superadmin") {
-      return res.status(403).json({ message: "Cannot delete super admin user" });
+      return res
+        .status(403)
+        .json({ message: "Cannot delete super admin user" });
     }
 
     // Cannot delete self
     if (userId === targetUserId) {
-      return res.status(403).json({ message: "Cannot delete your own account" });
+      return res
+        .status(403)
+        .json({ message: "Cannot delete your own account" });
     }
 
     await User.findByIdAndDelete(targetUserId);
