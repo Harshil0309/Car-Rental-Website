@@ -2,6 +2,18 @@ const express = require("express");
 const server = express();
 const port = process.env.PORT || 5000;
 const dbConnection = require("./db");
+
+// CORS middleware
+server.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 server.use(express.json());
 
 server.use("/api/cars", require("./routes/carsRoute"));

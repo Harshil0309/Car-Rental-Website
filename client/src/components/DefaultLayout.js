@@ -7,11 +7,13 @@ import {
   HomeOutlined,
   BookOutlined,
   DashboardOutlined,
+  UsergroupAddOutlined,
 } from "@ant-design/icons";
 
 function DefaultLayout(props) {
   const user = JSON.parse(localStorage.getItem("user"));
   const isAdmin = user?.isAdmin || user?.role === "admin";
+  const isSuperAdmin = user?.isSuperAdmin || user?.role === "superadmin";
 
   const menu = (
     <Menu>
@@ -42,6 +44,22 @@ function DefaultLayout(props) {
         </>
       )}
 
+      {isSuperAdmin && (
+        <>
+          <Menu.Divider />
+          <Menu.ItemGroup
+            title="Super Admin"
+            style={{ color: "#ff7043", fontWeight: "600" }}
+          >
+            <Menu.Item key="5" icon={<UsergroupAddOutlined />}>
+              <Link to="/superadmin" style={{ color: "inherit" }}>
+                User Management
+              </Link>
+            </Menu.Item>
+          </Menu.ItemGroup>
+        </>
+      )}
+
       <Menu.Divider />
       <Menu.Item
         key="4"
@@ -66,7 +84,12 @@ function DefaultLayout(props) {
                 <b>
                   <Link to="/" style={{ textDecoration: "none" }}>
                     🚗 Rent-A-Car{" "}
-                    {isAdmin && (
+                    {isSuperAdmin && (
+                      <span style={{ fontSize: "0.6em", marginLeft: "8px" }}>
+                        👑 Super Admin
+                      </span>
+                    )}
+                    {isAdmin && !isSuperAdmin && (
                       <span style={{ fontSize: "0.6em", marginLeft: "8px" }}>
                         👑 Admin
                       </span>
@@ -85,12 +108,15 @@ function DefaultLayout(props) {
                   shape="round"
                   icon={<UserOutlined />}
                   style={{
-                    background:
-                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    background: isSuperAdmin
+                      ? "linear-gradient(135deg, #ff7043 0%, #ff5722 100%)"
+                      : isAdmin
+                      ? "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+                      : "linear-gradient(135deg, #56ab2f 0%, #a8e063 100%)",
                     border: "none",
                   }}
                 >
-                  {user?.username || "User"} {isAdmin && "👑"}
+                  {user?.username || "User"} {(isSuperAdmin || isAdmin) && "👑"}
                 </Button>
               </Dropdown>
             </div>
@@ -108,7 +134,7 @@ function DefaultLayout(props) {
         </p>
         <p style={{ fontSize: "0.95rem", opacity: 0.8 }}>Harshil Gupta</p>
         <p style={{ fontSize: "0.85rem", opacity: 0.6, marginTop: "15px" }}>
-          © 2024 Rent-A-Car. All rights reserved.
+          © 2025 Rent-A-Car. All rights reserved.
         </p>
       </div>
     </div>

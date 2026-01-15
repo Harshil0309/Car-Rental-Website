@@ -6,10 +6,12 @@ import Register from "./pages/Register";
 import Bookingcar from "./pages/Bookingcar";
 import Private from "./components/Private";
 import AdminProtected from "./components/AdminProtected";
+import SuperAdminProtected from "./components/SuperAdminProtected";
 import UserBookings from "./pages/UserBookings";
 import AddCar from "./pages/AddCar";
 import AdminHome from "./pages/AdminHome";
 import EditCar from "./pages/EditCar";
+import UserManagement from "./pages/UserManagement";
 
 function App() {
   return (
@@ -43,6 +45,11 @@ function App() {
             path="/admin"
             exact
             element={<AdminProtected Component={AdminHome} />}
+          />
+          <Route
+            path="/superadmin"
+            exact
+            element={<SuperAdminProtected Component={UserManagement} />}
           />
         </Routes>
       </BrowserRouter>
