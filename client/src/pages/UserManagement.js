@@ -25,122 +25,47 @@ import {
   UnlockOutlined,
   CrownOutlined,
 } from "@ant-design/icons";
-import { userLogin } from "../redux/actions/userActions";
+import { getAllUsers, toggleAdminStatus, deleteUser } from "../redux/actions/userActions";
 
 function UserManagement() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState("");
   const dispatch = useDispatch();
   const currentUser = JSON.parse(localStorage.getItem("user"));
+  const { loading } = useSelector((state) => state.alertsReducer);
+  const { users } = useSelector((state) => state.usersReducer);
 
   // Fetch all users from API
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      if (!currentUser || !currentUser._id) {
-        message.error("User not authenticated");
-        setLoading(false);
-        return;
-      }
-
-      const response = await fetch(
-        `/api/users/all?userId=${currentUser._id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        const data = await response.json();
-        setUsers(data);
-      } else {
-        const errorData = await response.json();
-        message.error(errorData.message || "Failed to fetch users");
-        console.error("API Error:", errorData);
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-      message.error("Error connecting to server: " + error.message);
+  const fetchUsers = () => {
+    if (currentUser && currentUser._id) {
+      dispatch(getAllUsers(currentUser._id));
+    } else {
+      message.error("User not authenticated");
     }
-    setLoading(false);
   };
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  const handleToggleAdmin = async (targetUserId, currentStatus) => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        "/api/users/toggleadmin",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: currentUser?._id,
-            targetUserId: targetUserId,
-            isAdmin: !currentStatus,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        message.success(data.message);
-        fetchUsers();
-      } else {
-        message.error(data.message || "Failed to update user status");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      message.error("Error updating user status");
-    } finally {
-      setLoading(false);
-    }
+  const handleToggleAdmin = (targetUserId, currentStatus) => {
+    dispatch(toggleAdminStatus({
+      userId: currentUser?._id,
+      targetUserId: targetUserId,
+      isAdmin: !currentStatus,
+    })).then(() => {
+      fetchUsers();
+    });
   };
 
-  const handleDeleteUser = async (userId, username) => {
+  const handleDeleteUser = (userId, username) => {
     if (userId === currentUser?._id) {
       message.error("You cannot delete your own account");
       return;
     }
 
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `/api/users/${userId}?userId=${currentUser?._id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        message.success(
-          data.message || `User "${username}" deleted successfully`
-        );
-        fetchUsers();
-      } else {
-        message.error(data.message || "Failed to delete user");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      message.error("Error deleting user");
-    } finally {
-      setLoading(false);
-    }
+    dispatch(deleteUser(currentUser?._id, userId)).then(() => {
+      fetchUsers();
+    });
   };
 
   const filteredUsers = users.filter((user) =>

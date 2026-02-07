@@ -4,6 +4,7 @@ import thunk from 'redux-thunk'
 import {carsReducers} from './reducers/carsReducers'
 import { alertsReducer } from './reducers/alertsReducer';
 import { bookingsReducer } from './reducers/bookingsReducer';
+import { usersReducer } from './reducers/usersReducer';
 
 const composeEnhancers = composeWithDevTools({
   // Specify here name, actionsBlacklist, actionsCreators and other options
@@ -12,7 +13,8 @@ const composeEnhancers = composeWithDevTools({
 const rootReducer = combineReducers({
    carsReducers,
    alertsReducer,
-   bookingsReducer
+   bookingsReducer,
+   usersReducer
 
 })
 
