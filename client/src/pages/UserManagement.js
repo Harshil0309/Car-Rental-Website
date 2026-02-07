@@ -45,7 +45,7 @@ function UserManagement() {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/users/all?userId=${currentUser._id}`,
+        `/api/users/all?userId=${currentUser._id}`,
         {
           method: "GET",
           headers: {
@@ -77,7 +77,7 @@ function UserManagement() {
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:5000/api/users/toggleadmin",
+        "/api/users/toggleadmin",
         {
           method: "POST",
           headers: {
@@ -116,7 +116,7 @@ function UserManagement() {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:5000/api/users/${userId}?userId=${currentUser?._id}`,
+        `/api/users/${userId}?userId=${currentUser?._id}`,
         {
           method: "DELETE",
           headers: {
